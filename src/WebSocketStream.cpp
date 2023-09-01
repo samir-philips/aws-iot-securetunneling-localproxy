@@ -235,6 +235,8 @@ namespace aws {
                 }
                 if (localproxyConfig.is_web_proxy_using_tls) {
                     single_ssl_stream = std::make_shared<single_ssl_stream_type>(socket, ssl_context);
+                    SSL_CTX_set_tlsext_host_name(ssl_context.native_handle(), localproxyConfig.web_proxy_host.c_str());
+
 #ifdef _AWSIOT_TUNNELING_NO_SSL
                     wss = std::make_unique<websocket_stream_single_ssl_type>(*single_ssl_stream);
 #else
